@@ -25,7 +25,7 @@ class Ship_Goods_ReqController extends Controller
         ->join('users', 'users.id','ship_goods_request.user_id')
         ->join('section' , 'section.id' , 'ship_goods_request.section_id')->
         join('address' , 'address.id' , 'section.address_id')
-        ->get(['weight' , 'quantity' , 'description' , 'email' , 'phone' ,'users.name' , 'address.name' ]);
+        ->get(['ship_goods_request.id','weight' , 'quantity' , 'description' , 'email' , 'phone' ,'users.name' , 'address.name' ]);
         return response()->json(["ship_goods_request"=>$Ship_Goods]);
     }
 
@@ -37,7 +37,7 @@ class Ship_Goods_ReqController extends Controller
         $validate = Validator::make($request->all(),
         [
             'weight' => 'required',
-            'quantity' => 'required',
+            'quantity' => 'required|max:100',
             'description' => 'required'
         ]);
         if($validate->fails()){
@@ -70,10 +70,10 @@ class Ship_Goods_ReqController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request)
+    public function show($id)
     {
         //$Ship_Goods = Ship_Goods_Request::where('id' , $request->id)->get();
-        $Ship_Goods = DB::table('ship_goods_request')->where('id',$request->id)->get(['weight','quantity','description']);
+        $Ship_Goods = DB::table('ship_goods_request')->where('id',$id)->get(['weight','quantity','description']);
         return response()->json([
             $Ship_Goods
         ]);

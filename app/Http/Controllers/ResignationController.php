@@ -20,7 +20,7 @@ class ResignationController extends Controller
     {
         $id  = Section::where('admin_id' , Auth::user()->id)->value('id');
         $re = Resignation::where('section_id' , $id)->value('id');
-        
+
         $validate = Validator::make($request->all(),
         [
             'description' => 'required'
@@ -43,9 +43,9 @@ class ResignationController extends Controller
       ]);
     }
 
-    public function show(Request $request)
+    public function show($id)
     {
-        $Resignation = Resignation::where('id' , $request->id)->get(['description' , 'name']);
+        $Resignation = Resignation::where('id' , $id)->get(['description' , 'name']);
         return response()->json([
             $Resignation
         ]);

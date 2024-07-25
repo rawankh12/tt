@@ -48,12 +48,11 @@ class PriceTripController extends Controller
     }
 
 
-    public function show_p(Request $request)
+    public function show_p($id)
     {
-        $Price_Trip = DB::table('price_trip')->where('id' , $request->id)->get('price');
+        $Price_Trip = DB::table('price_trip')->where('id' , $id)->get('price');
         return response()->json([
-            'status'=>  true,
-            'Price_Trip'=>  $Price_Trip
+            $Price_Trip
           ]);
     }
 

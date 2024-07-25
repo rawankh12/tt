@@ -62,9 +62,9 @@ class TransportingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request)
+    public function show($id)
     {
-        $Transporting = DB::table('transporting')->where('transporting.id' , $request->id)
+        $Transporting = DB::table('transporting')->where('transporting.id' , $id)
         ->join('type_transporting' , 'type_transporting.id' , 'transporting.type_tra_id')
         ->get(['number' , 'capacity' , 'type_transporting.name_t' ]);
         return response()->json(["Transporting" => $Transporting]);

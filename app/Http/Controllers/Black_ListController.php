@@ -18,7 +18,7 @@ class Black_ListController extends Controller
     public function index_block()
     {
         $Block_list = DB::table('block_list')->
-        join('users' , 'users.id' , 'block_list.user_id')->get(['users.name' , 'email' ]);
+        join('users' , 'users.id' , 'block_list.user_id')->get(['block_list.id','user_name' , 'email' ]);
         return response()->json(["Block_list"=> $Block_list ]);
     }
 
@@ -26,57 +26,60 @@ class Black_ListController extends Controller
     public function index_section_black()
     {
         $Black_list = DB::table('black_list')->where('admin_id' , Auth::user()->id)->
-        join('users' , 'users.id' , 'black_list.user_id')->get(['name' , 'email'  ,'num']);
+        join('users' , 'users.id' , 'black_list.user_id')->get(['black_list.id','user_name' , 'email'  ,'num']);
         return response()->json(["Black_list"=> $Black_list ]);
 
     }
 
-    public function insert(Request $request)
-    {
+    // public function insert(Request $request)
+    // {
 
 
-        $num_Black_List = Black_List::where('user_id' , $request->user_id)->value('num');
-        $block = Block_List::where('user_id', $request->user_id)->value('id');
+    //     $num_Black_List = Black_List::where('user_id' , $request->user_id)->value('num');
+    //     $block = Block_List::where('user_id', $request->user_id)->value('id');
 
 
-        if($num_Black_List >0 && $num_Black_List < 3)
-        {
+    //     if($num_Black_List >0 && $num_Black_List < 3)
+    //     {
 
-            $num_Black_List = $num_Black_List + 1;
-            $id = Black_List::where('user_id' , $request->user_id)->value('id');
+    //         $num_Black_List = $num_Black_List + 1;
+    //         $id = Black_List::where('user_id' , $request->user_id)->value('id');
+    //         Black_ListController::update($id , $num_Black_List);
 
-            Black_ListController::update($id , $num_Black_List);
+
+    //     }
+    //     elseif($num_Black_List == 3 && $block == 0)
+    //     {
+
+    //         Block_List::insert([
+
+    //             'admin_id' => Auth::user()->id,
+    //             'user_id' => $request->user_id,
+    //         ]);
 
 
-        }
-        elseif($num_Black_List == 3 && $block == 0)
-        {
-            Block_List::insert([
 
-                'admin_id' => Auth::user()->id,
-                'user_id' => $request->user_id,
-            ]);
 
-        }
-        elseif($num_Black_List == null){
+    //     }
+    //     elseif($num_Black_List == null){
 
-            $num = 1;
+    //         $num = 1;
 
-            $Black_list= Black_List::insert([
+    //         $Black_list= Black_List::insert([
 
-                'admin_id' => Auth::user()->id,
-                'user_id' => $request->user_id,
-                'num' => $num
-            ]);
+    //             'admin_id' => Auth::user()->id,
+    //             'user_id' => $request->user_id,
+    //             'num' => $num
+    //         ]);
 
-        }else
-        {
-            return response()->json(['he is block']);
-        }
+    //     }else
+    //     {
+    //         return response()->json(['he is block']);
+    //     }
 
-        return response()->json(['success']);
+    //     return response()->json(['success']);
 
-    }
+    // }
 
 
     /**
@@ -99,35 +102,33 @@ class Black_ListController extends Controller
      * Show the form for editing the specified resource.
      */
     ///////////////////////////////////// في حال قام الادمن بإلغاء الحظر
-    public function edit_Black(Request $request)
-    {
-        if($request->accept == 0)
-        {
-            $num_Black_List = Black_List::where('id' , $request->id)->value('num');
-            $num_Black_List = $num_Black_List -1 ;
+    // public function edit_Black(Request $request)
+    // {
 
-            if($num_Black_List != 0)
-            {
-            $Black_list = Black_List::find($request->id);
-            $Black_list->num = $num_Black_List;
-            $Black_list->save();
-            }
-            else{
-            $Black_list = Black_List::find($request->id);
-            $Black_list->delete();
-            }
-        }
-    }
+    //         $num_Black_List = Black_List::where('id' , $request->id)->value('num');
+    //         $num_Black_List = $num_Black_List -1 ;
+
+    //         if($num_Black_List != 0)
+    //         {
+    //         $Black_list = Black_List::find($request->id);
+    //         $Black_list->num = $num_Black_List;
+    //         $Black_list->save();
+    //         }
+    //         else{
+    //         $Black_list = Black_List::find($request->id);
+    //         $Black_list->delete();
+    //         }
+
+    // }
 
     public function edit_Block(Request $request)
     {
-        if($request->accept == 0)
-        {
+
 
             $Block_list = Block_List::find($request->id);
             $Block_list->delete();
 
-        }
+
     }
 
     /**
@@ -137,21 +138,74 @@ class Black_ListController extends Controller
     {
         $Black_list = Black_List::find($id);
         $Black_list->num = $num_Black_List;
-
         $Black_list->save();
+
+
         return response()->json(['Black_list'=>$Black_list]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy_Black(Request $request)
+    public function destroy_Black($id)
     {
-        $Black_list = Black_List::find($request->id);
+        $Black_list = Black_List::find($id);
         $Black_list->delete();
         return response()->json([
             'succes' =>true,
             'msg' => 'deleted succesfully'
         ]);
+    }
+
+    public function insert($user_id)
+    {
+
+
+        $num_Black_List = Black_List::where('user_id' , $user_id)->value('num');
+        $block = Block_List::where('user_id', $user_id)->value('id');
+
+
+       if($block == null)
+       {
+        if($num_Black_List == null)
+        {
+
+             Black_List::insert([
+
+                'admin_id' => Auth::user()->id,
+                'user_id' => $user_id,
+                'num' => 1
+            ]);
+        }
+        else if($num_Black_List > 0 && $num_Black_List < 4)
+        {
+            $num_Black_List = $num_Black_List + 1;
+            $id = Black_List::where('user_id' , $user_id)->value('id');
+            Black_ListController::update($id , $num_Black_List);
+
+            if($num_Black_List == 4)
+            {
+
+              $id = Black_List::where('user_id' , $user_id)->value('id');
+              $b = Black_List::find($id);
+              $b->delete();
+
+            Block_List::insert([
+
+                'admin_id' => Auth::user()->id,
+                'user_id' => $user_id,
+            ]);
+
+
+        }
+    }else{
+        return response()->json(['this user have 4 alarms']);
+    }
+       }else{
+        return response()->json(['he is blocked']);
+       }
+       return response()->json(['success']);
+
+
     }
 }

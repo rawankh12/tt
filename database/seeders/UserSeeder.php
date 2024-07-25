@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
 
         User::create([
 
-            'name' => 'Admin',
+            'user_name' => 'Admin',
             'email' => 'Admin@gmail.com',
             'password'=> bcrypt('password'),
             'role_id'=> 1,
@@ -29,7 +29,7 @@ class UserSeeder extends Seeder
         ]);
         User::create([
 
-            'name' => 'ae',
+            'user_name' => 'ae',
             'email' => 'ae@gmail.com',
             'password'=> bcrypt('password'),
             'role_id'=> 2,
@@ -39,7 +39,7 @@ class UserSeeder extends Seeder
         ]);
         User::create([
 
-            'name' => 'aa',
+            'user_name' => 'aa',
             'email' => 'aa@gmail.com',
             'password'=> bcrypt('password'),
             'role_id'=> 2,
@@ -49,7 +49,7 @@ class UserSeeder extends Seeder
         ]);
         User::create([
 
-            'name' => 'ad',
+            'user_name' => 'ad',
             'email' => 'ad@gmail.com',
             'password'=> bcrypt('password'),
             'role_id'=> 2,
@@ -59,7 +59,7 @@ class UserSeeder extends Seeder
         ]);
         User::create([
 
-            'name' => 'ar',
+            'user_name' => 'ar',
             'email' => 'ar@gmail.com',
             'password'=> bcrypt('password'),
             'role_id'=> 2,

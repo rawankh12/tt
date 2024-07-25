@@ -46,7 +46,7 @@ class WaletSectController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request)
+    public function show()
     {
         $section = Section::where('admin_id' , Auth::user()->id)->value('id');
         $Walet_section = Walet_section::where('section_id' , $section)->get('amount');

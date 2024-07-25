@@ -16,7 +16,7 @@ class RequirementsController extends Controller
     {
         $Requirements = DB::table('reqruitment_form')->
         join('users' , 'users.id' , 'reqruitment_form.user_id')->
-       get(['users.name' ]);
+       get(['reqruitment_form.id','name' ]);
         return response()->json(['Requirements' => $Requirements]);
     }
 
@@ -24,20 +24,18 @@ class RequirementsController extends Controller
     public function create(Request $request)
     {
 
-        $user = User::where('user_id' , Auth::user()->id)->value('id');
-        if($user == 0)
+        $user = Requirements::where('user_id' , Auth::user()->id)->value('id');
+        if($user == null)
         {
-        $validate = Validator::make($request->all(),
-        [
+        $validate = $request->validate([
+
             'photo_of_univercity_degree'=>'required',
             'driving_licence'=> 'required',
             'description'=>'required',
             'cv'=>'required',
             'place' => 'required'
         ]);
-        if($validate->fails()){
-            return response()->json($validate->errors(),400);
-        }
+
 
         $photo_of_univercity_degree = $request->file('photo_of_univercity_degree');
         $newImage = time().$photo_of_univercity_degree->getClientOriginalName();
@@ -75,7 +73,7 @@ class RequirementsController extends Controller
 
       return response()->json([
         'status'=>  true,
-        'section'=>  $Requirements
+        'Requirements'=>  $Requirements
       ]);
     }else{
 
@@ -83,9 +81,9 @@ class RequirementsController extends Controller
     }
     }
 
-    public function show(Request $request)
+    public function show($id)
     {
-        $Requirements = DB::table('reqruitment_form')->where('reqruitment_form.id' , $request->id)->
+        $Requirements = DB::table('reqruitment_form')->where('reqruitment_form.id' , $id)->
         join('users' , 'users.id' , 'reqruitment_form.user_id')->
         join('section' , 'section.id' , 'reqruitment_form.section_id')->
         join('address' , 'address.id' , 'section.address_id')->

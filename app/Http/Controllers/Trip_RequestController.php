@@ -24,7 +24,7 @@ class Trip_RequestController extends Controller
         join('section' , 'section.id' , 'trips.section_id')->join('transporting' , 'transporting.id', 'trips.transport_id')
         ->join('type_transporting' , 'type_transporting.id' , 'transporting.type_tra_id')->
         join('address' , 'address.id' , 'section.address_id')->join('users' , 'users.id' , 'trip_requests.user_id')
-        ->get(['section_end' , 'date' , 'time' , 'num_seat' , 'name_t' , 'number' , 'start_point' , 'email' ,'users.name'] );
+        ->get(['trip_requests.id','section_end' , 'date' , 'time' , 'num_seat' , 'name_t' , 'number' , 'start_point' , 'email' ,'users.name'] );
         return response()->json(['Trips' => $Trips]);
     }
 
@@ -35,6 +35,10 @@ class Trip_RequestController extends Controller
     {
         $validate = Validator::make($request->all(),
         [
+            'section_end'=>'required|string',
+            'date' => 'required',
+            'time' => 'required',
+            'num_seat'=> 'required',
             'start_point' => 'required',
         ]);
         if($validate->fails()){
@@ -52,7 +56,8 @@ class Trip_RequestController extends Controller
             'num_seat' => $request->num_seat
         ]);
 
-           Trip_Request::insert([
+
+           Trip_Request::create([
 
             'user_id' => Auth::user()->id,
             'trip_id' => $Trips->id,
@@ -118,13 +123,13 @@ class Trip_RequestController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request)
+    public function show($id)
     {
         // $Trip_Request = Trip_Request::where('id' , $request->id)->get();
         // return response()->json([
         //     'Trip_Request' => $Trip_Request
         // ]);
-        $Trips = DB::table('trip_requests')->where('trip_requests.id' , $request->id)->join('trips' , 'trips.id' , 'trip_requests.trip_id')->
+        $Trips = DB::table('trip_requests')->where('trip_requests.id' , $id)->join('trips' , 'trips.id' , 'trip_requests.trip_id')->
         join('section' , 'section.id' , 'trips.section_id')->join('transporting' , 'transporting.id', 'trips.transport_id')
         ->join('type_transporting' , 'type_transporting.id' , 'transporting.type_tra_id')->
         join('address' , 'address.id' , 'section.address_id')->join('users' , 'users.id' , 'trip_requests.user_id')

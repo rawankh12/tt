@@ -27,7 +27,7 @@ class ReservationController extends Controller
     ->join('type_transporting' , 'type_transporting.id' , 'transporting.type_tra_id')->
     join('section' , 'section.id' , 'trips.section_id')->
     join('address' , 'address.id' , 'section.address_id')->
-   get(['image_identity' , 'attachments' , 'date' , 'time' ,'users.name' ,'address.name', 'name_t' , 'number' ]);
+   get(['reservation.id','image_identity' , 'attachments' , 'date' , 'time' ,'users.name' ,'address.name', 'name_t' , 'number' ]);
     return response()->json(['Reservation' => $Reservation]);
     }
 
@@ -39,17 +39,18 @@ class ReservationController extends Controller
         $price = Price_Trip::where('trip_id' , $request->trip_id)->value('price');
         $amount = Walet_user::where('user_id' , Auth::user()->id)->value('amount');
         $num_seat = Trips::where('id' , $request->trip_id)->value('num_seat');
-        $black = Black_List::where('user_id' , Auth::user()->id)->value('user_id');
+       // $black = Black_List::where('user_id' , Auth::user()->id)->value('user_id');
         $block = Block_List::where('user_id' , Auth::user()->id)->value('user_id');
 
-        if($black != Auth::user()->id &&  $block != Auth::user()->id)
+        if($block != Auth::user()->id)
         {
-        if($num_seat > 0 && $price <= $amount)
+        if($num_seat > $request->num_s && $price * $request->num_s <= $amount)
         {
         $validate = Validator::make($request->all(),
         [
             'image_identity' =>'required',
             'attachments' => 'required',
+            'num_s' => 'required'
         ]);
 
         if($validate->fails()){
@@ -67,14 +68,16 @@ class ReservationController extends Controller
             'trip_id'=> $request->trip_id,
             'image_identity' => $path,
             'attachments' => $request->attachments,
+            'num_s' => $request->num_s
         ]);
 
         $trip = Trips::where('id' , $request->trip_id)->value('num_seat');
-        $trip = $trip -1;
+
+        $trip = $trip - $request->num_s;
         $id = $request->trip_id;
         TripController::update_num($trip , $id);
-
-        $am = $amount - $price;
+        $price = $price * $request->num_s;
+        $am = $amount - $price  ;
         WaletUserController::update($am , Auth::user()->id);
         WaletSectController::insert($price , $request->trip_id);
 
@@ -95,7 +98,7 @@ class ReservationController extends Controller
 
     return response()->json([
         'status'=> false,
-        'msg'=> 'you can not reservation because you are in a blak list or block list'
+        'msg'=> 'you can not reservation because you are in a block list'
       ]);
 
 }
@@ -112,9 +115,9 @@ class ReservationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request)
+    public function show($id)
     {
-        $Reservation = Reservation::where('id' , $request->id)->get(['image_identity' , 'attachments']);
+        $Reservation = Reservation::where('id' , $id)->get(['image_identity' , 'attachments']);
         return response()->json([
             $Reservation
         ]);

@@ -19,11 +19,11 @@ class ComplaintController extends Controller
         // $Complaint = Complaint::all();
         // return response()->json(["Complaint"=>$Complaint]);
 
-        $Complaint = DB::table('complaint')->
+        $Complaint = DB::table('complaint')->join('users' , 'users.id' , 'complaint.user_id')->
         join('trips' , 'trips.id' , 'complaint.trip_id')-> join('section' , 'section.id' , 'trips.section_id')->join('transporting' , 'transporting.id', 'trips.transport_id')
         ->join('type_transporting' , 'type_transporting.id' , 'transporting.type_tra_id')->
         join('address' , 'address.id' , 'section.address_id')
-        ->get(['name' , 'section_end' , 'date' , 'time' ,'number', 'type_transporting.name' , 'description' ]);
+        ->get(['trips.id','user_name','name' , 'date'  , 'description' ]);
 
         return response()->json(["Complaint"=> $Complaint ]);
     }
@@ -66,9 +66,9 @@ class ComplaintController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request)
+    public function show($id)
     {
-        $Complaint = Complaint::where('id' , $request->id)->get('complaint');
+        $Complaint = Complaint::where('id' , $id)->get('description');
         return response()->json([
             $Complaint
         ]);

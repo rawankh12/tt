@@ -54,9 +54,9 @@ class WaletUserController extends Controller
     public function show()
     {
         $Walet_user = Walet_user::where('user_id' , Auth::user()->id)->get('amount');
-        return response()->json([
+        return response()->json(
             $Walet_user
-        ]);
+        );
     }
 
     /**

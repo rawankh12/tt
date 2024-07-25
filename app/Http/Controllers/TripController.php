@@ -31,7 +31,7 @@ class TripController extends Controller
         join('section' , 'section.id' , 'trips.section_id')->join('transporting' , 'transporting.id', 'trips.transport_id')
         ->join('type_transporting' , 'type_transporting.id' , 'transporting.type_tra_id')->
         join('address' , 'address.id' , 'section.address_id')->join('avg_rate' , 'avg_rate.trip_id' , 'trips.id')->join('price_trip' , 'price_trip.trip_id' , 'trips.id')
-        ->get(['address.name' , 'section_end' , 'date' , 'time' , 'num_seat' , 'name_t' ,'avg_rate' ,'price' ]);
+        ->get(['trips.id','address.name' , 'section_end' , 'date' , 'time' , 'num_seat' , 'name_t' ,'avg_rate' ,'price'  ]);
         return response()->json(['Trips' => $Trips]);
     }
 
@@ -46,7 +46,8 @@ class TripController extends Controller
           'section_end'=>'required|string',
           'date' => 'required',
           'time' => 'required',
-          'num_seat'=> 'required'
+          'num_seat'=> 'required',
+          'price'=> 'required'
         ]);
         if($validate->fails()){
             return response()->json($validate->errors(),400);
@@ -80,7 +81,7 @@ class TripController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function trip_res()
+    public function indextrip_res()
     {
         // $res = Reservation::where('user_id' , Auth::user()->id)->get('trip_id');
         // $trip = Trips::whereIn('id' , $res)->get();
@@ -88,12 +89,15 @@ class TripController extends Controller
         //     $trip
         // ]);
 
-        $Trips = DB::table('trips')->where('type_id' , 2)->
-        join('section' , 'section.id' , 'trips.section_id')->join('transporting' , 'transporting.id', 'trips.transport_id')
-        ->join('type_transporting' , 'type_transporting.id' , 'transporting.type_tra_id')->
-        join('address' , 'address.id' , 'section.address_id')->join('avg_rate' , 'avg_rate.trip_id' , 'trips.id')->join('price_trip' , 'price_trip.trip_id' , 'trips.id')
-        ->join('reservation' , 'reservation.trip_id' , 'trips.id')
-        ->get(['address.name' , 'section_end' , 'date' , 'time' , 'num_seat' , 'name_t' ,'avg_rate' ,'price' ,'attachments']);
+        $Trips = DB::table('reservation')->where('user_id' , Auth::user()->id)->
+        join('trips' , 'trips.id' ,'reservation.trip_id')->
+        join('section' , 'section.id' , 'trips.section_id')->
+        join('transporting' , 'transporting.id', 'trips.transport_id')->
+        join('type_transporting' , 'type_transporting.id' , 'transporting.type_tra_id')->
+        join('address' , 'address.id' , 'section.address_id')->
+        join('avg_rate' , 'avg_rate.trip_id' , 'trips.id')->
+        join('price_trip' , 'price_trip.trip_id' , 'trips.id')->
+        get(['name' , 'section_end' , 'date' , 'time' , 'num_seat' , 'name_t' ,'avg_rate' ,'price' ,'attachments' , 'num_s']);
         return response()->json(['Trips' => $Trips]);
 
     }
@@ -103,14 +107,14 @@ class TripController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request)
+    public function show($id)
     {
         //  $Trips = Trips::where('id' , $request->id)->get();
         // return response()->json([
         //     $Trips
         // ]);
 
-        $Trips = DB::table('trips')->where('type_id' , 2)->where('trips.id' , $request->id)->
+        $Trips = DB::table('trips')->where('type_id' , 2)->where('trips.id' , $id)->
         join('section' , 'section.id' , 'trips.section_id')->join('transporting' , 'transporting.id', 'trips.transport_id')
         ->join('type_transporting' , 'type_transporting.id' , 'transporting.type_tra_id')->
         join('address' , 'address.id' , 'section.address_id')->join('avg_rate' , 'avg_rate.trip_id' , 'trips.id')->join('price_trip' , 'price_trip.trip_id' , 'trips.id')
@@ -163,34 +167,48 @@ class TripController extends Controller
         ]);
     }
 
-    public function searchbytime(Request $request)
+    public function searchbytime($time)
     {
-        $search = $request->time;
-        $time = DB::table('trips')->where('time' , 'LIKE' , '%'.$search.'%')->get();
-        return response()->json([$time]);
+        // $search = $time;
+        // $time = DB::table('trips')->where('time' , 'LIKE' , '%'.$search.'%')->get();
+        // return response()->json([$time]);
+
+        $Trips = DB::table('trips')->where('trips.time' , $time)->where('trips.type_id' , 2)->
+        join('section' , 'section.id' , 'trips.section_id')->join('transporting' , 'transporting.id', 'trips.transport_id')
+        ->join('type_transporting' , 'type_transporting.id' , 'transporting.type_tra_id')->
+        join('address' , 'address.id' , 'section.address_id')->join('avg_rate' , 'avg_rate.trip_id' , 'trips.id')->join('price_trip' , 'price_trip.trip_id' , 'trips.id')
+        ->get(['trips.id','address.name' , 'section_end' , 'date' , 'time' , 'num_seat' , 'name_t' ,'avg_rate' ,'price'  ]);
+        return response()->json(['Trips' => $Trips]);
     }
 
 
-    public function searchbydate(Request $request)
+    public function searchbydate($date)
     {
-        $search = $request->date;
-        $date = DB::table('trips')->whereDate('date' , 'LIKE' , '%'.$search.'%')->get();
-        return response()->json([$date]);
+        $Trips = DB::table('trips')->where('trips.date' , $date)->where('trips.type_id' , 2)->
+        join('section' , 'section.id' , 'trips.section_id')->join('transporting' , 'transporting.id', 'trips.transport_id')
+        ->join('type_transporting' , 'type_transporting.id' , 'transporting.type_tra_id')->
+        join('address' , 'address.id' , 'section.address_id')->join('avg_rate' , 'avg_rate.trip_id' , 'trips.id')->join('price_trip' , 'price_trip.trip_id' , 'trips.id')
+        ->get(['trips.id','address.name' , 'section_end' , 'date' , 'time' , 'num_seat' , 'name_t' ,'avg_rate' ,'price'  ]);
+        return response()->json(['Trips' => $Trips]);
     }
 
-    public function searchbysection(Request $request)
+    public function searchbysection($name)
     {
 
-        $address = DB::table('address')->where('name' , $request->name)->value('id');
-        $section = DB::table('section')->where('address_id',$address)->value('id');
-        $search = $section;
-        $se = DB::table('trips')->where('section_id' , 'LIKE' , '%'.$search.'%')->get();
+        $Trips = DB::table('address')->where('name' , 'LIKE' , '%'.$name.'%')->orWhere('trips.section_end' , $name)->where('trips.type_id' , 2)->
+        join('section' , 'section.address_id' , 'address.id')->
+        join('trips' , 'trips.section_id' , 'section.id')->
+        join('transporting' , 'transporting.id', 'trips.transport_id')->
+        join('type_transporting' , 'type_transporting.id' , 'transporting.type_tra_id')->
+        join('avg_rate' , 'avg_rate.trip_id' , 'trips.id')->
+        join('price_trip' , 'price_trip.trip_id' , 'trips.id')
+        ->get(['trips.id','address.name' , 'section_end' , 'date' , 'time' , 'num_seat' , 'name_t' ,'avg_rate' ,'price'  ]);
 
 
-        $searc = $request->name;
-        $trip = DB::table('trips')->where('section_end' , 'LIKE' , '%'.$searc.'%')->get();
 
-        return response()->json([$se , $trip]);
+        return response()->json([$Trips]);
+
+
     }
 
     // public function searchbysectionandtype(Request $request)
