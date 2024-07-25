@@ -1,0 +1,60 @@
+/* resources/css/style.css */
+
+/* الخلفية */
+body {
+    background: linear-gradient(to right, #f8f9fa, #e9ecef);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* تنسيق الهيدر */
+.header {
+    background-color: #343a40;
+    color: #fff;
+    padding: 1rem;
+}
+
+.header .header-icons img {
+    border-radius: 50%;
+}
+
+/* تنسيق السايدبار */
+#sidebar {
+    background-color: #343a40;
+    color: #fff;
+    min-width: 250px;
+}
+
+.sidebar-nav .sidebar-link {
+    color: #fff;
+    padding: 10px 15px;
+    display: block;
+}
+
+.sidebar-nav .sidebar-link:hover {
+    background-color: #495057;
+}
+
+/* تنسيق الجدول */
+.table {
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.table th, .table td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* تنسيق الزر */
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}

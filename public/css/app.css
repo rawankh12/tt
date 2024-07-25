@@ -1,0 +1,573 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+::after,
+::before {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+li {
+    list-style: none;
+}
+
+h1 {
+    font-weight: 600;
+    font-size: 1.5rem;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    direction: rtl; /* إضافة اتجاه النص من اليمين إلى اليسار */  
+}
+.swal-title {
+    color: #060707; /* لون العنوان */
+    font-size: 20px; /* حجم الخط */
+    font-weight: bold; /* سماكة الخط */
+    /* أي أنماط أخرى ترغب في تطبيقها */
+}
+
+.swal-button.ok {
+    background-color: #ff0000; /* لون الخلفية للزر */
+    color: #fff; /* لون النص في الزر */
+    /* أي أنماط أخرى ترغب في تطبيقها */
+}
+.swal-button.cancle {
+    background-color: #171515; /* لون الخلفية للزر */
+    color: #fff; /* لون النص في الزر */
+    /* أي أنماط أخرى ترغب في تطبيقها */
+}
+
+/* هيدر */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: calc(100% - 70px);
+    z-index: 1000;
+    background-color: #ffffff; /* لون خلفية الهيدر */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    transition: all 0.25s ease-in-out;
+}
+
+.header.expand {
+    width: calc(100% - 260px);
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.header-icons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-right: auto; /* دفع الأيقونات إلى الجهة اليسرى */
+}
+
+.header-icons button {
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1.25rem;
+    margin-left: 1rem; /* إضافة الهامش بين الأيقونات */
+    cursor: pointer;
+}
+
+.header-icons i {
+    color: hwb(0 0% 100%);
+    font-size: 1.5rem;
+}
+
+.header-icons span {
+    margin-left: 0.5rem; /* مسافة بين الأيقونة والاسم */
+}
+
+/* إضافة تنسيق لزر الحذف */
+.delete-button {
+    font-size: 1.2rem; /* تكبير حجم الأيقونة */
+    color: red; 
+    background: none; /* إزالة الخلفية */
+    border: none; /* إزالة الحدود */
+    padding: 0; /* إزالة الحشوة */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: color 0.3s ease; /* انتقال سلس للون */ 
+    margin-top: -6px;
+    margin-bottom: 15px;
+}
+
+.edit-button {
+    font-size: 1.2rem; /* تكبير حجم الأيقونة */
+    color: blue; /* اللون الأحمر للأيقونة */
+    background: none; /* إزالة الخلفية */
+    border: none; /* إزالة الحدود */
+    padding: 0; /* إزالة الحشوة */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: color 0.3s ease; /* انتقال سلس للون */ 
+
+    margin-top: -13px;
+
+    margin-top: -6px;
+
+    margin-bottom: 15px;
+}
+
+
+.d-flex .btn {
+    margin-right: 40px; /* المسافة بين الأزرار */
+}
+
+
+.btn i {
+    pointer-events: none; /* منع الأيقونة من تفعيل الزر */
+}
+
+/* تأثير التمرير على الزر */
+.btn:hover {
+    color: rgb(209, 147, 147); /* لون أحمر أغمق عند التمرير */
+}
+/* تنسيق صفحة الحذف */
+
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: #e6e6fa;
+}
+
+/* .btn-outline-secondary {
+    border-color: #6c757d;
+    color: #6c757d;
+} */
+
+.btn-close {
+    background-color: transparent;
+    border: none;
+    font-size: 1.2rem;
+}
+.modal-dialog-centered {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.modal-header {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.modal-body {
+    padding-top: 0;
+}
+/* تنسيق عام للكارد */
+.card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    border: 1px solid #000;
+    height: 90%; /* لجعل الكارد يأخذ ارتفاعه بالكامل */
+    margin-bottom: 5rem;
+    margin-right: 3rem;
+    background: linear-gradient(to bottom right, #f0f8ff, #e6e6fa);
+    display: flex;
+    text-align: center;
+    position: relative; /* مهم لتحديد موضع الصورة */
+    flex-direction: column;
+    justify-content: space-between; /* لضمان توزيع المساحة بين العناصر بالتساوي */
+}
+
+.supervisor-image , .branch-image {
+    width: 100px; /* يمكنك ضبط العرض حسب الحاجة */
+    height: 100px; /* يمكنك ضبط الارتفاع حسب الحاجة */
+    border-radius: 50%;
+    margin-bottom: 8px;
+    display: block;
+    /* top: 50px; */
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -10px;
+    
+}
+
+.supervisor-info-box {
+    border: 2px solid #000; /* Black border */
+    padding: 10px;
+    text-align: center;
+    border-radius: 8px;
+    margin: 8px;
+    background:  #fff;
+    position: relative; /* للتعامل مع الترتيب */
+    
+}
+.card:hover {
+    box-shadow: 0 4px 10px #02568C ;
+}
+
+/* Ensuring the button appears below the card content */
+.card-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    text-align: center;
+    color: #02568C ;
+}
+
+.card-text {
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+@media (max-width: 767.98px) {
+    .card {
+        margin: 0 auto 1rem auto; /* لتوسيط الكارد أفقياً وتقليل الهامش السفلي */
+        width: 100%; /* لجعل الكارد يأخذ العرض الكامل */
+    }
+}
+
+.btn-add-supervisor, .btn-add-branch {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: white;
+    /* color: blue; */
+    border: 2px solid blue;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in-out;
+    z-index: 9999; /* تأكد من أن الزر فوق جميع العناصر الأخرى */
+    
+}
+
+.btn-add-supervisor:hover , .btn-add-branch:hover{
+    /* background-color: blue; */
+    /* color: white; */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.btn-add-supervisor .bi {
+    font-size: 1.8em; /* لضبط حجم الأيقونة */
+}
+
+.btn-add-branch .bi {
+    font-size: 1.8em; /* لضبط حجم الأيقونة */
+}
+
+.custom-btn:hover{
+    background: linear-gradient(135deg, #f0f8ff, #e6e6fa, #aaa6a6);
+    
+}
+
+.custom-btn{
+    border-color: #000;
+}
+
+/* Title Styles */
+.supervisor-title {
+    color: #02568C; /* لون النص */
+    width: 100%;
+    margin-right: 40px;
+    /* text-align: center; */
+    width: 100%;
+    margin-top: 20px;
+    font-weight: bold; /* جعل النص عريض */
+    /* font-size: 2rem;  */
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+}
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+
+/* .modal-content{
+    align-items: center;
+    justify-content: center;
+} */
+
+/* تعديل التنسيقات العامة للصفحة */
+.container {
+    margin-top: 5rem; /* الهامش العلوي */
+}
+
+/* wrapper */
+.wrapper {
+    display: flex;
+}
+
+.main {
+    min-height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    transition: all 0.35s ease-in-out;
+    /* background-color: #fafbfe; */
+    margin-right: 70px; /* Adjust according to sidebar width */
+    padding-bottom: 60px; /* للتأكد من عدم اختبار المحتوى تحت السايد بار */
+    /* text-align: center; */
+}
+
+.main.expand {
+    width: calc(100% - 260px);
+    margin-right: 260px; /* Adjust according to sidebar width when expanded */
+}
+.main .d-flex.justify-content-start {
+    margin-top: auto;
+}
+/* تحريك زر الإغلاق إلى الجانب الأيمن */
+.modal-header .btn-close.move-right {
+    position: absolute;
+    right: 1rem;
+    /* top: 1rem; */
+}
+#sidebar {
+    width: 70px;
+    min-width: 70px;
+    z-index: 1000;
+    transition: all .25s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    /* background-color: hwb(213 40% 51%); */
+    right: 0; /* تغيير الموضع إلى اليمين */
+    position: fixed; /* تحديد الموقع كثابت ليظل ملتصقًا بالجانب الأيمن */
+    top: 0;
+    bottom: 0; /* لتمتد الشريط الجانبي حتى أسفل الصفحة */
+    border-left: 2px solid transparent black; /* إضافة حدود شفافة مبدئيًا */
+    
+}
+
+#sidebar.expand {
+    width: 260px;
+    min-width: 260px;
+}
+
+#toggle-btn {
+    background-color: transparent;
+    cursor: pointer;
+    border: 0;
+    padding: 1rem 1.5rem;
+}
+
+#toggle-btn i {
+    font-size: 1.5rem;
+    color: hwb(0 8% 91%);
+}
+
+.sidebar-logo {
+    margin: auto 0;
+}
+
+.sidebar-logo a {
+    color: hwb(0 7% 93%);
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+
+#sidebar:not(.expand) .sidebar-logo,
+#sidebar:not(.expand) a.sidebar-link span {
+    display: none;
+}
+
+.sidebar-nav {
+    padding: 2rem 0;
+    flex: 1 1 auto;
+}
+
+.sidebar-logo img {
+    max-width: 100%;
+    height: auto;
+}
+
+a.sidebar-link {
+    padding: .625rem 1.625rem;
+    color: hwb(0 7% 93%);
+    display: block;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    border-right: 3px solid transparent; /* تغيير الحافة إلى اليمين */
+}
+
+.sidebar-link i {
+    font-size: 1.1rem;
+    margin-left: .75rem; /* تغيير الهامش إلى اليسار */
+    margin-right: 0; /* إلغاء الهامش من اليمين */
+}
+
+a.sidebar-link:hover {
+    background-color: #eae7f413;
+    border-right: 3px solid #3b7ddd; /* تغيير الحافة إلى اليمين */
+}
+
+.sidebar-item {
+    position: relative;
+}
+
+.sidebar-link.active {
+    /* background-color: #648faa;; */
+    color: rgb(106, 176, 195) !important;
+    /* margin-right: 10px;
+    margin-left: 10px;  */
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0; /* تغيير إلى اليمين */
+    width: calc(100% - 70px); /* عرض الفوتر يساوي عرض الصفحة ناقص عرض السايد بار */
+    color: #fff;
+    padding: 0 20px;
+    text-align: center;
+    transition: all 0.25s ease-in-out;
+    height: 50px;
+    display: flex;
+    align-items: center; /* توسيط عمودي */
+    justify-content: center; /* توسيط أفقي */
+    box-sizing: border-box; /* لضمان أن padding لا يؤثر على ارتفاع الفوتر */
+}
+
+.mb-0{
+    height: 100px;
+}
+.footer.expand {
+    width: calc(100% - 260px); /* عرض الفوتر عند توسع السايد بار */
+}
+
+.position-relative .card-footer {
+    background-color: #02568C;
+    height: 3px;
+    width: 100%;
+    position: absolute;
+    bottom: 1px;
+    left: 0;
+    /* border-bottom-left-radius: 40px; 
+    border-bottom-right-radius: 40px; */
+    border-radius: 30px; 
+    
+}
+
+.custom-card {
+    /* border: 2px solid #02568C;  */
+    border-top-left-radius: 20px; 
+    border-top-right-radius: 20px; 
+}
+
+
+
+body.light-mode {
+    background-color: #fafbfe;
+    color: #000;
+}
+
+body.dark-mode {
+    background-color:   rgb(30, 40, 52);
+    color: #fff;
+}
+
+.header.dark-mode {
+    background-color:  rgb(30, 40, 52);
+    color: #fff;
+}
+
+.header.light-mode {
+    background-color: #f8f9fa;
+    color: hwb(0 0% 100%);
+}
+
+.footer.dark-mode {
+    color: #fff;
+}
+
+.footer.light-mode {
+    background-color: #f8f9fa;
+    color: hwb(0 0% 100%);
+}
+.profile-btn a {
+    color: inherit; /* ليتم تغيير لون النص وفقًا للوضع */
+}
+
+body.dark-mode .profile-btn a {
+    color: #fff;
+}
+
+
+body.light-mode .profile-btn a {
+    color:#000000;
+}
+/* الشريط الجانبي في الوضع الليلي */
+#sidebar.dark-mode {
+    background-color:  rgb(30, 40, 52);
+    border-left: 2px solid #fff; /* حدود بيضاء للوضع الليلي */
+}
+
+/* الشريط الجانبي في الوضع النهاري */
+#sidebar.light-mode {
+    background-color: #f8f9fa;
+    border-left: 2px solid #000; /* حدود سوداء للوضع النهاري */
+}
+
+/* لون النصوص في الشريط الجانبي */
+#sidebar.dark-mode a.sidebar-link {
+    color:hwb(0 86% 9%);
+}
+
+#sidebar.light-mode a.sidebar-link {
+    color: hwb(0 7% 93%);
+}
+
+#sidebar.light-mode a.sidebar-link:hover {
+    background-color: hwb(254 40% 28% / 0.075);
+    border-right: 3px solid #3b7ddd; /* تغيير الحافة إلى اليمين */
+}
+#sidebar.dark-mode a.sidebar-link.active {
+    border-right: 3px solid hwb(203 71% 9%);
+    margin-right: 10px; /* إضافة فراغ على اليمين */
+}
+
+#sidebar.dark-mode a.sidebar-link:hover {
+    background-color: 3px solid hwb(203 71% 9%);
+    border-right: 3px solid hwb(203 71% 9%); /* تغيير الحافة إلى اليمين */
+}
+#sidebar.dark-mode .sidebar-logo a {
+    color: hwb(0 86% 9%);
+}
+#sidebar.dark-mode #toggle-btn i  {
+    color: hwb(0 86% 9%);
+}
+.supervisor-title.dark-mode {
+    color: hwb(0 86% 9%);
+}
