@@ -27,7 +27,7 @@ class transportController extends Controller
     {
         $type_tras = TypeTran::all();
         $sections = Address::all(); 
-        return view('transport.createtransport', compact( 'sections','type_tras'));
+        return view('transport.createtransport', compact('sections','type_tras'));
     }
 
       public function store(Requesttransport $request)

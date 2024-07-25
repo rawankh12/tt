@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('transporting', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('admin_id')->unsigned();
+            $table->bigInteger('section_id')->unsigned();
             $table->bigInteger('type_tra_id')->unsigned();
             $table->integer('capacity');
             $table->integer('number');
-            $table->foreign('admin_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('section_id')->references('id')->on('section')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('type_tra_id')->references('id')->on('type_transporting')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });

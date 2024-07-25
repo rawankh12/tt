@@ -11,7 +11,7 @@ class Transporting extends Model
 
     protected $table='transporting';
     protected $fillable = [
-        'admin_id',
+        'section_id',
         'type_tra_id',
         'capacity',
         'number',

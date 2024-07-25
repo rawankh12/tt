@@ -1,4 +1,7 @@
+?>
+
 @extends('layouts.app')
+
 @section('title', 'Transport')
 
 @section('content')
@@ -15,10 +18,14 @@
                         <div class="card-body">
                             {{-- <img src="{{ asset('images/اضافة وتعديل رحلة.png') }}" class="supervisor-image"> --}}
                             <div class="supervisor-info-box">
-                                <p class="card-text"><strong>مدير الفرع :</strong> {{ $transport->section->address->name }}</p>
+                                <p class="card-text"><strong>مدير الفرع :</strong> 
+                                    {{ $transport->section && $transport->section->address ? $transport->section->address->name : 'العنوان غير متوفر' }}
+                                </p>
                             </div>
                             <div class="supervisor-info-box">
-                                <p class="card-text"><strong>نوع وسيلة النقل :</strong> {{ $transport->type_tran->name_t }}</p>
+                                <p class="card-text"><strong>نوع وسيلة النقل :</strong> 
+                                    {{ $transport->type_tran ? $transport->type_tran->name_t : 'نوع وسيلة النقل غير متوفر' }}
+                                </p>
                             </div>
                             <div class="supervisor-info-box">
                                 <p class="card-text"><strong>عدد الركاب :</strong> {{ $transport->capacity }}</p>
@@ -76,9 +83,5 @@
             }
         });
     }
-    
-    </script>
-
-    
-
+</script>
 @endsection

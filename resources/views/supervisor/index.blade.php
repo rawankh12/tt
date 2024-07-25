@@ -26,7 +26,7 @@
                 <div class="card position-relative">
                     <div class="card-body">
                             <img src="{{ asset('images/المشرفين.png') }}" class="supervisor-image">
-                            <h5 class="card-title">{{ $supervisor->name }}</h5> 
+                            <h5 class="card-title">{{ $supervisor->user_name }}</h5> 
                             <div class="supervisor-info-box">
                             <p class="card-text"><strong>الايميل :</strong> {{ $supervisor->email }}</p> </div>
                             <div class="supervisor-info-box">

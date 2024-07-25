@@ -40,7 +40,7 @@ class SupervisorController extends Controller
         try {
             // Create a new user record
             $user = new User();
-            $user->name = $request->name;
+            $user->user_name = $request->user_name;
             $user->email = $request->email;
             $user->password = Hash::make($request->password);
             $user->phone = $request->phone;
@@ -84,7 +84,7 @@ class SupervisorController extends Controller
 
         try {
             // تحديث بيانات المشرف
-            $supervisor->name = $request->name;
+            $supervisor->user_name = $request->user_name;
             $supervisor->email = $request->email;
             if ($request->password) {
                 $supervisor->password = Hash::make($request->password);
