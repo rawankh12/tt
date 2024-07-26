@@ -141,4 +141,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(User::class, 'user_id');
     }
+  
+    public function job()
+    {
+        return $this->belongsToMany(Job::class, 'job_id');
+    }
 }
