@@ -62,7 +62,7 @@ class User extends Authenticatable
      */
     public function complaint()
     {
-        return $this->hasOne(Complaint::class, 'user_id');
+        return $this->hasMany(Complaint::class, 'user_id');
     }
 
     /**
@@ -140,10 +140,5 @@ class User extends Authenticatable
     public function rate()
     {
         return $this->hasMany(User::class, 'user_id');
-    }
-  
-    public function job()
-    {
-        return $this->belongsToMany(Job::class, 'job_id','user_jobs_id');
     }
 }

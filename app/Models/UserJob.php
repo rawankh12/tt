@@ -14,6 +14,7 @@ class UserJob extends Model
     protected $fillable = [
         'user_id',
         'job_id',
+        'status'
     ];
 
     // public function user()

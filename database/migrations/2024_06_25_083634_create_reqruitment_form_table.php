@@ -14,14 +14,12 @@ return new class extends Migration
         Schema::create('reqruitment_form', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('user_id')->unsigned();
-            $table->bigInteger('section_id')->unsigned();
             $table->string('cv');
-            $table->string('photo_of_univercity_degree');
-            $table->string('driving_licence');
+            $table->string('image_identity');
+            $table->string('driving_licence')->nullable();
             $table->text('description');
-            $table->string('place');
+            $table->bigInteger('mobile_phone');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('section_id')->references('id')->on('section')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

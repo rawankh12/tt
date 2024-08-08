@@ -36,7 +36,7 @@ class AuthController extends Controller
                 'user_name' => $validate['user_name'],
                 'phone' => $validate['phone'],
                 'confirm_password' => $validate['confirm_password'],
-                'role_id'=> $request->role_id
+                'role_id'=> 3
             ]);
             Walet_user::insert([
                 'user_id' => $user->id,
@@ -86,7 +86,8 @@ class AuthController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'تم تسجيل الدخول النجاح',
-                'token' => $user->createToken("API TOKEN")->plainTextToken
+                'token' => $user->createToken("API TOKEN")->plainTextToken,
+                'role_id' => Auth::user()->role_id
             ], 200);
         }
         catch (\Throwable $th) {
@@ -99,7 +100,10 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::user()->tokens()->delete();
-        return response()->json(['تم تسجيل الخروج بنجاح']);
+        return response()->json([
+            'msg'=>'تم تسجيل الخروج بنجاح',
+
+        ]);
     }
 
     public function deleted()

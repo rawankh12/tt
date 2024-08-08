@@ -10,10 +10,13 @@ class Trip_Request extends Model
     use HasFactory;
 
     protected $table='trip_requests';
+    protected $primaryKey ="tr_id";
+
     protected $fillable = [
         'user_id',
         'trip_id',
-        'start_point',  
+        'start_point',
+        'description_admin'
     ];
 
     /**

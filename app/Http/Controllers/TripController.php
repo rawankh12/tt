@@ -52,9 +52,12 @@ class TripController extends Controller
         if($validate->fails()){
             return response()->json($validate->errors(),400);
         }
+
+       $section = Section::where('admin_id' , Auth::user()->id)->value('id');
+
         $Trips= Trips::create([
 
-            'section_id' => $request->section_id,
+            'section_id' => $section,
             'transport_id' => $request->transport_id,
             'type_id' => 2,
             'section_end' => $request->section_end,
@@ -97,7 +100,7 @@ class TripController extends Controller
         join('address' , 'address.id' , 'section.address_id')->
         join('avg_rate' , 'avg_rate.trip_id' , 'trips.id')->
         join('price_trip' , 'price_trip.trip_id' , 'trips.id')->
-        get(['name' , 'section_end' , 'date' , 'time' , 'num_seat' , 'name_t' ,'avg_rate' ,'price' ,'attachments' , 'num_s']);
+        get(['reservation.id','name' , 'section_end' , 'date' , 'time' , 'num_seat' , 'name_t' ,'avg_rate' ,'price' ,'attachments' , 'num_s']);
         return response()->json(['Trips' => $Trips]);
 
     }

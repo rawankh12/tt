@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Black_ListController;
 use App\Http\Controllers\ComplaintController;
+use App\Http\Controllers\JobController;
 use App\Http\Controllers\PriceTripController;
 use App\Http\Controllers\RaportController;
 use App\Http\Controllers\RateController;
@@ -55,10 +56,11 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::post('/destroy_Black/{id}', [Black_ListController::class , 'destroy_Black']);
 
 
-    Route::post('/create_transporting', [TransportingController::class , 'create']);
+    Route::post('/create_transporting_s', [TransportingController::class , 'create']);
     Route::post('/update_transporting',[TransportingController::class , 'update']);
     Route::post('/destroy_transporting', [TransportingController::class , 'destroy']);
 
+    Route::post('/cancle_trip_admin', [Trip_RequestController::class , 'cancle_trip_admin']);
 
     Route::post('/insert_report',[RaportController::class , 'insert']);
 
@@ -88,8 +90,11 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
         Route::post('/insert_rate', [RateController::class , 'insert']);
         Route::post('/update_rate',[RateController::class , 'update']);
 
-        Route::post('/accept_trip_sh', [Trip_RequestController::class , 'accept_trip']);
-        Route::post('/cancle_trip_sh', [Trip_RequestController::class , 'cancle_trip']);
+        Route::get('/accept_trip_sh', [Trip_RequestController::class , 'accept_trip']);
+        Route::get('/cancle_trip_sh', [Trip_RequestController::class , 'cancle_trip']);
+
+
+
 
         Route::post('/add_Walet_u',[WaletUserController::class , 'add']);
         Route::get('/show_Walet_u',[WaletUserController::class , 'show']);
@@ -140,7 +145,7 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     ///////////////////////////
     Route::get('/show_price/{id}',[PriceTripController::class , 'show_p']);
     ///////////////////////////////
-
-
+    Route::get('/index_job',[JobController::class , 'index']);
+    Route::post('/create_job',[JobController::class , 'create']);
 
 });

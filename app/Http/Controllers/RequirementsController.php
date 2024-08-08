@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Requirements;
 use App\Models\User;
+use App\Models\UserJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -27,19 +28,19 @@ class RequirementsController extends Controller
         $user = Requirements::where('user_id' , Auth::user()->id)->value('id');
         if($user == null)
         {
-        $validate = $request->validate([
+            $request->validate([
 
-            'photo_of_univercity_degree'=>'required',
+            'image_identity'=>'required',
             'driving_licence'=> 'required',
             'description'=>'required',
             'cv'=>'required',
-            'place' => 'required'
+            'mobile_phone' => 'required'
         ]);
 
 
-        $photo_of_univercity_degree = $request->file('photo_of_univercity_degree');
-        $newImage = time().$photo_of_univercity_degree->getClientOriginalName();
-        $photo_of_univercity_degree->move(public_path('upload') , $newImage);
+        $image_identity = $request->file('image_identity');
+        $newImage = time().$image_identity->getClientOriginalName();
+        $image_identity->move(public_path('upload') , $newImage);
         $path = "public/upload/$newImage";
 
         $driving_licence = $request->file('driving_licence');
@@ -52,24 +53,24 @@ class RequirementsController extends Controller
         $cv->move(public_path('upload') , $newImage1);
         $path2 = "public/upload/$newImage1";
 
-        if($request->place == 1)
-        {
-            $place = 'الشركة';
-        }
-        else{
-            $place = 'الفرع';
-        }
 
         $Requirements= Requirements::create([
 
             'user_id' => Auth::user()->id,
             'section_id'  => $request->section_id,
-            'photo_of_univercity_degree'  => $path,
+            'image_identity'  => $path,
             'driving_licence'  => $path1,
             'description'  => $request->description,
             'cv'  => $path2,
-            'place' => $place
+            'mobile_phone' => $request->mobile_phone
         ]);
+
+        UserJob::insert([
+            'user_id' => Auth::user()->id,
+            'job_id' => $request->job_id,
+            'status'=>''
+        ]);
+
 
       return response()->json([
         'status'=>  true,
@@ -87,7 +88,7 @@ class RequirementsController extends Controller
         join('users' , 'users.id' , 'reqruitment_form.user_id')->
         join('section' , 'section.id' , 'reqruitment_form.section_id')->
         join('address' , 'address.id' , 'section.address_id')->
-       get(['photo_of_univercity_degree' , 'driving_licence' , 'description' , 'cv' ,'users.name', 'phone' ,'address.name' ,'place', ]);
+       get(['image_identity' , 'driving_licence' , 'description' , 'cv' ,'user_name','address.name' ,'mobile_phone', ]);
         return response()->json(['Requirements' => $Requirements]);
     }
 
@@ -104,9 +105,9 @@ class RequirementsController extends Controller
      */
     public function update(Request $request)
     {
-        $photo_of_univercity_degree = $request->file('photo_of_univercity_degree');
-        $newImage = time().$photo_of_univercity_degree->getClientOriginalName();
-        $photo_of_univercity_degree->move(public_path('upload') , $newImage);
+        $image_identity = $request->file('image_identity');
+        $newImage = time().$image_identity->getClientOriginalName();
+        $image_identity->move(public_path('upload') , $newImage);
         $path = "public/upload/$newImage";
 
         $driving_licence = $request->file('driving_licence');
@@ -121,7 +122,7 @@ class RequirementsController extends Controller
 
         $Requirements = Requirements::find($request->id);
 
-            $Requirements->photo_of_univercity_degree  = $path;
+            $Requirements->image_identity  = $path;
             $Requirements->driving_licence  = $path1;
             $Requirements->description  = $request->description;
             $Requirements->cv  = $path2;

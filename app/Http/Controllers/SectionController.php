@@ -8,6 +8,7 @@ use App\Models\Walet_section;
 use Database\Seeders\SectionSeeder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class SectionController extends Controller
@@ -21,8 +22,10 @@ class SectionController extends Controller
      */
     public function index()
     {
-        $scetion = Section::all();
-        return response()->json(["Section"=>$scetion]);
+        $section = DB::table('section')->
+        join('address' , 'address.id' , 'section.address_id')
+        ->get(['name']);
+        return response()->json(["section"=>$section]);
     }
 
     /**

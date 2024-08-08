@@ -20,11 +20,11 @@ class Trip_RequestController extends Controller
      */
     public function index()
     {
-        $Trips = DB::table('trip_requests')->join('trips' , 'trips.id' , 'trip_requests.trip_id')->
+        $Trips = DB::table('trip_requests')->where('section.admin_id' , Auth::user()->id)->join('trips' , 'trips.id' , 'trip_requests.trip_id')->
         join('section' , 'section.id' , 'trips.section_id')->join('transporting' , 'transporting.id', 'trips.transport_id')
         ->join('type_transporting' , 'type_transporting.id' , 'transporting.type_tra_id')->
         join('address' , 'address.id' , 'section.address_id')->join('users' , 'users.id' , 'trip_requests.user_id')
-        ->get(['trip_requests.id','section_end' , 'date' , 'time' , 'num_seat' , 'name_t' , 'number' , 'start_point' , 'email' ,'users.name'] );
+        ->get(['trip_requests.tr_id', 'trips.id','section_end' , 'date' , 'time' , 'num_seat' , 'name_t' , 'number' , 'start_point' , 'email' ,'user_name'] );
         return response()->json(['Trips' => $Trips]);
     }
 
@@ -62,6 +62,7 @@ class Trip_RequestController extends Controller
             'user_id' => Auth::user()->id,
             'trip_id' => $Trips->id,
             'start_point' => $request->start_point,
+            'description_admin' => ''
 
         ]);
         // Price_Trip::insert([
@@ -79,10 +80,9 @@ class Trip_RequestController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function accept_trip(Request $request)
+    public function accept_trip()
     {
-        if($request->accept == 1)
-        {
+
             $trip = Trip_Request::where('user_id' , Auth::user()->id)->pluck('trip_id')->last();
             $price = Price_Trip::where('trip_id', $trip)->value('price');
 
@@ -100,23 +100,34 @@ class Trip_RequestController extends Controller
                 return response()->json(['you should add mony to your walet you dont have mony enough to trip']);
             }
 
+
         }
-        }
 
 
 
 
-        public function cancle_trip(Request $request)
+        public function cancle_trip()
         {
 
-            if($request->accept == 0)
-            {
-              $Trip_Request = Trip_Request::orderBy('id', 'desc')->take(1)->first();
+
+              $Trip_Request = Trip_Request::orderBy('tr_id', 'desc')->take(1)->first();
               $Trips = Trips::orderBy('id' , 'desc')->take(1)->first();
               $Trips->delete();
               $Trip_Request->delete();
               return response()->json(['not accept']);
-            }
+
+        }
+
+
+        public function cancle_trip_admin(Request $request)
+        {
+
+
+              $Trip_Request = Trip_Request::find($request->tr_id);
+              $Trip_Request->description_admin = $request->description_admin;
+              $Trip_Request->save();
+              return response()->json(['not accept']);
+
         }
 
 
@@ -129,7 +140,7 @@ class Trip_RequestController extends Controller
         // return response()->json([
         //     'Trip_Request' => $Trip_Request
         // ]);
-        $Trips = DB::table('trip_requests')->where('trip_requests.id' , $id)->join('trips' , 'trips.id' , 'trip_requests.trip_id')->
+        $Trips = DB::table('trip_requests')->where('trip_requests.tr_id' , $id)->join('trips' , 'trips.id' , 'trip_requests.trip_id')->
         join('section' , 'section.id' , 'trips.section_id')->join('transporting' , 'transporting.id', 'trips.transport_id')
         ->join('type_transporting' , 'type_transporting.id' , 'transporting.type_tra_id')->
         join('address' , 'address.id' , 'section.address_id')->join('users' , 'users.id' , 'trip_requests.user_id')
@@ -155,7 +166,7 @@ class Trip_RequestController extends Controller
      */
     public function update(Request $request)
     {
-        $Trip_Request = Trip_Request::find($request->id);
+        $Trip_Request = Trip_Request::find($request->tr_id);
         $Trip_Request->start_point = $request->start_point;
 
 
@@ -168,7 +179,7 @@ class Trip_RequestController extends Controller
      */
     public function destroy(Request $request)
     {
-        $section = Trip_Request::find($request->id);
+        $section = Trip_Request::find($request->tr_id);
         $section->delete();
         return response()->json([
             'succes' => true,

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Price_Trip;
+use App\Models\Reservation;
+use App\Models\Trip_Request;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -18,7 +20,7 @@ class PriceTripController extends Controller
     {
         $validate = Validator::make($request->all(),
         [
-            'price' => 'required'
+            'price' => 'required',
         ]);
         if($validate->fails()){
             return response()->json($validate->errors(),400);
@@ -28,6 +30,11 @@ class PriceTripController extends Controller
             'trip_id' => $request->trip_id,
             'price' => $request->price
         ]);
+
+        $d = Trip_Request::where('trip_id' , $request->trip_id)->value('tr_id');
+        $des = Trip_Request::find($d);
+        $des->description_admin = 'accept';
+        $des->save();
 
       $p = PriceTripController::show($Price_Trip->id);
 
@@ -46,6 +53,8 @@ class PriceTripController extends Controller
         return $Price_Trip ;
 
     }
+
+
 
 
     public function show_p($id)

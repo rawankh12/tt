@@ -12,12 +12,11 @@ class  Requirements extends Model
     protected $table='reqruitment_form';
     protected $fillable = [
         'user_id',
-        'section_id',
-        'photo_of_univercity_degree',
+        'image_identity',
         'driving_licence',
         'description',
         'cv',
-        'place'
+        'mobile_phone'
     ];
 
     /**

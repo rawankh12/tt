@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('trips', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('section_id')->unsigned();
-            $table->bigInteger('transport_id')->unsigned();
+            $table->bigInteger('transport_id')->unsigned()->nullable();
             $table->bigInteger('type_id')->unsigned();
             $table->string('section_end');
             $table->date('date');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Section;
 use App\Models\Transporting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +21,7 @@ class TransportingController extends Controller
 
         $Transporting = DB::table('transporting')
         ->join('type_transporting' , 'type_transporting.id' , 'transporting.type_tra_id')
-        ->get(['number' , 'capacity' , 'type_transporting.name_t' ]);
+        ->get(['transporting.id','number' , 'capacity' , 'type_transporting.name_t' ]);
         return response()->json(["Transporting"=>$Transporting]);
     }
 
@@ -37,12 +38,13 @@ class TransportingController extends Controller
         if($validate->fails()){
             return response()->json($validate->errors(),400);
         }
+        $section = Section::where('admin_id' , Auth::user()->id)->value('id');
         $Transporting= Transporting::create([
 
             'type_tra_id' => $request->type_tra_id,
             'capacity' => $request->capacity,
             'number' => $request->number,
-            'admin_id' => Auth::user()->id
+            'section_id' => $section
         ]);
 
       return response()->json([
